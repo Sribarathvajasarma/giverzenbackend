@@ -16,4 +16,7 @@ router.delete('/delete_request', listingCtrl.deleteRequest)
 
 router.post('/accept_request', listingCtrl.acceptRequest)
 
+router.post('/accept', listingCtrl.getListings)
+
+
 module.exports = router
