@@ -16,7 +16,7 @@ app.use(cors())
 app.use(cookieParser())
 
 const https = require('https').createServer(app)
-const io = require('socket.io')(http)
+const io = require('socket.io')(https)
 
 io.on('connection', socket => {
     console.log(socket.id + 'Connected')
