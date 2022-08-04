@@ -19,8 +19,10 @@ const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 
 io.on('connection', socket => {
-    console.log(socket.id + 'Connected')
+    console.log('a user connected');
+
 })
+
 
 app.use('/api', require('./routes/authRouter'))
 app.use('/api', require('./routes/userRouter'))
