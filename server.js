@@ -19,7 +19,7 @@ const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 
 io.on('connection', socket => {
-    SocketServer(socket)
+    console.log(socket.id + 'Connected')
 })
 
 app.use('/api', require('./routes/authRouter'))
