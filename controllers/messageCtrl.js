@@ -99,8 +99,8 @@ const messageCtrl = {
     },
     getConversations: async (req, res) => {
         try {
-            const sending = req.body
-            await db.query("SELECT conversations.sender,conversations.recipient,conversations.text,conversations.media,user.avatar,user.username FROM conversations,user where (conversations.sender= '" + sending + "' OR conversations.recipient= '" + sending + "') AND (conversations.recipient=user.id OR conversations.sender=user.id) ORDER BY conversations.updated_at", async (err, results) => {
+            const { sending } = req.body
+            await db.query("SELECT conversations.sender,conversations.recipient,conversations.text,conversations.media,user.avatar,user.username FROM conversations,user where (conversations.sender='" + sending + "' OR conversations.recipient='" + sending + "') AND (conversations.recipient=user.id OR conversations.sender=user.id) ORDER BY conversations.updated_at", async (err, results) => {
                 if (err) {
                     throw err
                 }
@@ -109,7 +109,6 @@ const messageCtrl = {
                         conversations: results,
                         result: results.length
                     })
-                    console.log(results)
                 }
 
             })
