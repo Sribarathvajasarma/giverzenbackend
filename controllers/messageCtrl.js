@@ -24,8 +24,7 @@ const messageCtrl = {
     createMessage: async (req, res) => {
         try {
 
-            const { recipient, text, media } = req.body
-            const sending = req.user.id
+            const { recipient, text, media, sending } = req.body
             if (!recipient || (!text.trim() && media.length === 0)) return;
 
             await db.query("SELECT * FROM conversations where (sender= '" + sending + "' AND recipient= '" + recipient + "') OR (sender= '" + recipient + "' AND recipient= '" + sending + "')", async (err, results) => {
@@ -100,8 +99,7 @@ const messageCtrl = {
     },
     getConversations: async (req, res) => {
         try {
-            const sending = req.user.id
-            console.log(sending)
+            const sending = req.body
             await db.query("SELECT conversations.sender,conversations.recipient,conversations.text,conversations.media,user.avatar,user.username FROM conversations,user where (conversations.sender= '" + sending + "' OR conversations.recipient= '" + sending + "') AND (conversations.recipient=user.id OR conversations.sender=user.id) ORDER BY conversations.updated_at", async (err, results) => {
                 if (err) {
                     throw err
@@ -134,8 +132,7 @@ const messageCtrl = {
     },
     getMessages: async (req, res) => {
         try {
-            const recipient = req.params.id
-            const sending = req.user.id
+            const { sending, recipient } = req.body
             await db.query("SELECT * FROM messages where (sender= '" + sending + "' AND recipient= '" + recipient + "') OR (sender= '" + recipient + "' AND recipient= '" + sending + "') ORDER BY created_at", async (err, results) => {
                 if (err) {
                     throw err
