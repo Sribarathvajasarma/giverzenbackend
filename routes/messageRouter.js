@@ -4,9 +4,9 @@ const auth = require('../middleware/auth')
 
 router.post('/message', messageCtrl.createMessage)
 
-router.get('/conversations', messageCtrl.getConversations)
+router.post('/conversations', messageCtrl.getConversations)
 
-router.get('/message/:id', messageCtrl.getMessages)
+router.post('/message', messageCtrl.getMessages)
 
 
 module.exports = router
