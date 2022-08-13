@@ -11,6 +11,7 @@ const SocketServer = (socket) => {
     // Connect - Disconnect
     socket.on('joinUser', id => {
         users.push({ id, socketId: socket.id })
+        console.log(users)
         // users.push({ id: user._id, socketId: socket.id, followers: user.followers })
     })
 
