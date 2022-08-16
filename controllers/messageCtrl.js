@@ -51,12 +51,11 @@ const messageCtrl = {
                     })
                 }
 
-                await db.query("SELECT id FROM conversations where sender= '" + sending + "' AND recipient= '" + recipient + "'", async (err3, results3) => {
+                await db.query("SELECT id FROM conversations where (sender= '" + sending + "' AND recipient= '" + recipient + "') OR (sender= '" + recipient + "' AND recipient= '" + sending + "')", async (err3, results3) => {
                     if (err3) {
                         throw err3
                     }
-                    if (results3) {
-                        console.log(results3)
+                    if (results3.length !== 0) {
                         const conversation = results3[0].id
                         await db.query("INSERT INTO messages (sender,recipient,text,media,conversation) VALUES ('" + sending + "','" + recipient + "', '" + text + "','" + media + "', '" + conversation + "')", async (err4, results4) => {
                             if (err4) {
