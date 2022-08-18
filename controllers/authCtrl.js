@@ -2,6 +2,9 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const db = require('../config/db')
 const Users = require('../models/userModel')
+const sendMail = require("./sendMail");
+const { google } = require("googleapis");
+const { OAuth2 } = google.auth;
 
 
 const authCtrl = {
@@ -218,10 +221,98 @@ const authCtrl = {
         }
 
 
-    }
+    },
+    forgotPassword: async (req, res) => {
+        try {
+          const { email } = req.body;
+    
+          db.query("select * from user where email=?",email, (err, results) => {
+            if (err) throw err;
+            if (results.length === 0)
+              return res.status(400).json({ msg: "The email doesnot exist",code : 0 });
+            else {
+              const number = between(10, 100000);
+              db.query(
+                "UPDATE user SET pinNumber = ? WHERE email = ? ",
+                [number, email],
+                (err1, results1) => {
+                  if (err1) throw err1;
+                  console.log(results1);
+                }
+              );
+    
+              sendMail(email, number);
+              res.json({ msg: "Send the Pin Number , please check your email." ,code : 1});
+            }
+          });
+        } catch (err) {
+          return res.status(500).json({ msg: err.message });
+        }
+      },
+    confirmpinNumber: async (req, res) => {
+        try {
+          const { pinNumber } = req.body;
+          console.log(pinNumber)
+          if(pinNumber === ""){
+            return res.status(400).json({
+              msg : "Give the pin Number",code:2
+            })
+        }
+          db.query(
+            " select * from user where pinNumber = ?",
+            pinNumber,
+            (err, results) => {
+              if (err) throw err;
+              if (results.length === 0) {
+                return res.status(400)
+                  .json({ msg: "The Pin Number is doesnot Match",code:0});
+    
+              }
+              
+              else{
+                 res.json({
+                   msg : "pin number is match Now you can reset You Password",code : 1})
+              }
+            
+             
+              
+             
+            } );
+    
+         console.log(pinNumber)
+        } catch (err) {
+          return res.status(500).json({ msg: err.message });
+        }
+      },
+    resetPassword: async (req, res) => {
+        try {
+          const { password, email } = req.body;
+          console.log(password);
+          const passwordHash = await bcrypt.hash(password,12);
+          console.log(passwordHash)
+    
+          db.query(
+            "UPDATE user SET password = ? WHERE email = ?",
+            [passwordHash, email],
+            (err, results) => {
+              if (err) throw err;
+              else {
+                res.json({ msg: "Password successfully changed!",code : 1 });
+              }
+            }
+          );
+        } catch (err) {
+          return res.status(500).json({ msg: err.message });
+        }
+      },
+
 
 
 }
+
+function between(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
 const createAccessToken = (payload) => {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
