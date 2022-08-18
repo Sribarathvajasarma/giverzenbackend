@@ -171,7 +171,34 @@ const listingCtrl = {
             return res.status(500).json({ msg: err.message })
 
         }
-    }
+    },
+
+    checkRequested: async (req, res) => {
+        try {
+            const { requester_id, listings_id } = req.body
+            db.query("SELECT * FROM requests WHERE listings_id='" + listings_id + "' AND requester_id='" + requester_id + "'", (err, results) => {
+                if (err) {
+                    throw err
+                }
+                if (results.length !== 0) {
+                    res.json({
+                        code: 1
+                    })
+                } else {
+                    res.json({
+                        code: 0
+                    })
+                }
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+
+    },
+
+
 
 
 
