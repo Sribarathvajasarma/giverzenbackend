@@ -8,7 +8,7 @@ router.get('/listings', listingCtrl.getListings)
 
 router.post('/add_listings', listingCtrl.addListings)
 
-router.get('/get_requests', listingCtrl.getRequests)
+router.post('/get_requests', listingCtrl.getRequests)
 
 router.post('/add_request', listingCtrl.addRequests)
 
