@@ -91,7 +91,7 @@ const listingCtrl = {
     getRequests: async (req, res) => {
         try {
             const { id } = req.body
-            db.query("SELECT requests.id,requests.listings_id,requests.requester_id,requests.created_at,user.avatar,user.username FROM requests,user where requests.listings_id = '" + id + "' AND user.id = requests.requester_id", (err, results) => {
+            db.query("SELECT requests.id,requests.listings_id,requests.requester_id,requests.created_at,user.avatar,user.username,user.latitude,user.longitude FROM requests,user where requests.listings_id = '" + id + "' AND user.id = requests.requester_id", (err, results) => {
                 if (err) {
                     throw err
                 }
