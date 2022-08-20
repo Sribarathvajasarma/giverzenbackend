@@ -161,6 +161,26 @@ const messageCtrl = {
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
+    },deleteMessages: async (req, res) => {
+        try {
+            const { id } = req.body
+            await db.query("DELETE FROM messages where id='" + id + "'", async (err, results) => {
+                if (err) {
+                    throw err
+                }
+                if (results) {
+                    res.json({
+                        msg: "Message deleted"
+                    })
+
+
+                }
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
     },
 
 deleteConversation: async (req, res) => {
