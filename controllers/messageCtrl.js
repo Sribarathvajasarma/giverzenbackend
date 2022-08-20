@@ -163,14 +163,22 @@ const messageCtrl = {
         }
     },
 
+<<<<<<< HEAD
     deleteConversation: async (req, res) => {
         try {
             const { sender, receiver } = req.body
             await db.query("DELETE FROM conversations where (sender= '" + sender + "' AND recipient= '" + receiver + "') OR (sender= '" + receiver + "' AND recipient= '" + sender + "')", async (err, results) => {
+=======
+    deleteMessages: async (req, res) => {
+        try {
+            const { id } = req.body
+            await db.query("DELETE FROM messages where id='" + id + "'", async (err, results) => {
+>>>>>>> a8e835701f735f8c1b84e117a68840c0d6a9ad7d
                 if (err) {
                     throw err
                 }
                 if (results) {
+<<<<<<< HEAD
                     await db.query("DELETE FROM messages where (sender= '" + sender + "' AND recipient= '" + receiver + "') OR (sender= '" + receiver + "' AND recipient= '" + sender + "')", async (err2, results2) => {
                         if (err2) {
                             throw err2
@@ -182,6 +190,13 @@ const messageCtrl = {
                         }
                     })
 
+=======
+                    res.json({
+                        msg: "Message deleted"
+                    })
+
+
+>>>>>>> a8e835701f735f8c1b84e117a68840c0d6a9ad7d
                 }
             })
 
