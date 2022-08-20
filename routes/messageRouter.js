@@ -8,5 +8,6 @@ router.post('/conversations', messageCtrl.getConversations)
 
 router.post('/message', messageCtrl.getMessages)
 
+router.delete('/delete_conversation', messageCtrl.deleteConversation)
 
 module.exports = router
