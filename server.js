@@ -27,7 +27,7 @@ app.use('/api', require('./routes/authRouter'))
 app.use('/api', require('./routes/userRouter'))
 app.use('/api', require('./routes/messageRouter'))
 app.use('/api', require('./routes/listingRouter'))
-
+app.use('/api', require('./routes/nonsmartphoneuserRouter'))
 
 
 const port = process.env.PORT || 5000
