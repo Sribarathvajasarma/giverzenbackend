@@ -8,7 +8,9 @@ register: async(req, res) => {
     try{
         const { username,phonenumber,longitude,latitude,listingdistance } = req.body
 
-      
+        if (!username || !phonenumber|| !longitude|| !latitude ||!listingdistance)
+        return res.status(400).json({msg: "please fill in all fields!"})
+
 
         let newUserName = username.toLowerCase().replace(/ /g, '')
 
