@@ -17,6 +17,7 @@ router.delete('/delete_request', listingCtrl.deleteRequest)
 router.post('/accept_request', listingCtrl.acceptRequest)
 
 router.post('/check_request', listingCtrl.checkRequested)
+router.get('/get_drivers', listingCtrl.getDrivers)
 
 
 module.exports = router

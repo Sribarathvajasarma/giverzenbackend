@@ -198,6 +198,29 @@ const listingCtrl = {
 
     },
 
+    getDrivers: async (req, res) => {
+        try {
+            db.query("SELECT * FROM driver", (err, results) => {
+                if (err) {
+                    throw err
+                }
+                if (results.length === 0) {
+                    res.json({
+                        msg: 'No Available Drivers found',
+                    })
+                } else {
+                    res.json({
+                        results
+                    })
+                }
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    }
+
 
 
 
