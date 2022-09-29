@@ -219,6 +219,59 @@ const listingCtrl = {
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
+    },
+
+    addDriverRequest: async (req, res) => {
+        try {
+            const { user_id, driver_id, listing_id, pickup_longitude, pickup_latitude, dest_longitude, dest_latitude, user_avatar, driver_avatar, user_name, driver_name } = req.body
+            const status = "Requested"
+            db.query("INSERT INTO request_driver (user_id, driver_id, listing_id,status,pickup_longitude, pickup_latitude, dest_longitude, dest_latitude, user_avatar, driver_avatar, user_name, driver_name) VALUES ('" + user_id + "','" + driver_id + "', '" + listing_id + "','" + status + "','" + pickup_longitude + "','" + pickup_latitude + "','" + dest_longitude + "','" + dest_latitude + "','" + user_avatar + "','" + driver_avatar + "','" + user_name + "','" + driver_name + "')", (err, results) => {
+                if (err) {
+                    throw err;
+                }
+
+                if (results) {
+                    res.json({
+                        msg: 'Driver requested Successfully',
+                        code: 1
+
+
+                    })
+                }
+
+
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+
+
+    getDriverRequests: async (req, res) => {
+        try {
+            db.query("Select * from request_driver", (err, results) => {
+                if (err) {
+                    throw err
+                }
+                if (results.length === 0) {
+                    res.json({
+                        msg: 'No driver reuqest found',
+                    })
+                } else {
+                    res.json({
+                        results
+                    })
+                }
+
+
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
     }
 
 
