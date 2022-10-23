@@ -11,7 +11,6 @@ register: async(req, res) => {
         if (!username || !phonenumber|| !longitude|| !latitude ||!listingdistance)
         return res.status(400).json({msg: "please fill in all fields!"})
 
-
         let newUserName = username.toLowerCase().replace(/ /g, '')
 
         
@@ -43,6 +42,7 @@ register: async(req, res) => {
     catch (err){
       return res.status(500).json({ msg: err.message })  
     }
-}
+},
+
 }
     module.exports=nonSmartphoneUserCtrl;
