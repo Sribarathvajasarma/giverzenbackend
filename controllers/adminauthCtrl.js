@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const db = require('../config/db')
-const AdminUsers = require('../models/adminModel')
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 
