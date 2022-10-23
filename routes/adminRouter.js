@@ -8,7 +8,7 @@ const adDriverCtrl = require("../controllers/adDriverCtrl")
 router.get('/anlistings', listingCtrl.getListings)
 router.get('/users', userCtrl.getUsers)
 router.get('/complaints', compCtrl.getComplaints)
-router.post('/adlogin', adminauthCtrl.adlogin)
+router.post('/login', adminauthCtrl.login)
 router.get('/drivers', adDriverCtrl.getDrivers)
 
 module.exports = router
