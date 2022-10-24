@@ -20,6 +20,7 @@ const postCtrl = {
           } else {
             res.json({
                 msg: "Posted succesfully ",
+                code: 1,
                 results
               });
           }
