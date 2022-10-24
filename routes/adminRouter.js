@@ -10,5 +10,5 @@ router.get('/users', userCtrl.getUsers)
 router.get('/complaints', compCtrl.getComplaints)
 router.post('/login', adminauthCtrl.login)
 router.get('/drivers', adDriverCtrl.getDrivers)
-
+router.post('/complaints2', compCtrl.addComplaints)
 module.exports = router
