@@ -11,4 +11,5 @@ router.get('/complaints', compCtrl.getComplaints)
 router.post('/login', adminauthCtrl.login)
 router.get('/drivers', adDriverCtrl.getDrivers)
 router.post('/complaints2', compCtrl.addComplaints)
+router.delete('/complaints3', compCtrl.deleteComplaints)
 module.exports = router
