@@ -26,6 +26,8 @@ const compCtrl = {
 
     addComplaints: async (req, res) => {
         try {
+            const { username,complaint,reportedto,date } = req.body
+
             db.query("INSERT INTO complaints ( username, complaint, reportedto,date) VALUES ('" + username + "', '" + complaint + "','" + reportedto + "','" + date + "')", (err, results) => {
                 if (err) {
                     throw err
