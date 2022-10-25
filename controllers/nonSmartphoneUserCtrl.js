@@ -1,5 +1,5 @@
 const db = require('../config/db')
-const axios = require("axios");
+
 
 const nonSmartphoneUserCtrl = {
 
@@ -38,53 +38,13 @@ const nonSmartphoneUserCtrl = {
             })
 
 
-            // res.json({msg: "Register success"})
         }
         catch (err) {
             return res.status(500).json({ msg: err.message })
         }
     },
 
-    sendmsg: async (req, res) => {
-        try {
-            db.query("SELECT * FROM nonsmartphoneuser", (err, results) => {
-                //    const { id, username,phonenumber, longitude,latitude,listingdistance} = res.body
 
-                console.log(results);
-               
-                if (err) {
-                    throw err
-                }
-                if (results.length === 0) {
-                    res.json({
-                        msg: 'No users found',
-                    })
-                } else {
-                    axios({
-
-                        method: "POST",
-                        url: ` https://app.notify.lk/api/v1/send?user_id=23241&api_key=eNUuqBMwsTQ66DypMWT3&sender_id=NotifyDEMO&to='"+phonenumber+"'&message=Testthuvethika`,
-
-                    })
-                    res.json({
-                        msg: 'listings Added Successfully',
- })
-                }
-
-            })
-
-
-        } catch (err) {
-            return res.status(500).json({ msg: err.message })
-        }
-    },
-
-    sendSMS: () => axios({
-
-        method: "POST",
-        url :` https://app.notify.lk/api/v1/send?user_id=23241&api_key=eNUuqBMwsTQ66DypMWT3&sender_id=NotifyDEMO&to=94773971512&message=Testthuve`,
-
-    })
 
 }
 module.exports = nonSmartphoneUserCtrl;
