@@ -1,4 +1,6 @@
 const db = require('../config/db')
+const axios = require("axios")
+
 
 const listingCtrl = {
     getListings: async (req, res) => {
@@ -26,12 +28,12 @@ const listingCtrl = {
 
     addListings: async (req, res) => {
         try {
-            const { poster_id, name, description, quantity, longitude, latitude, avatar, expires_in, type } = req.body
+            const { poster_id, name, description, quantity, longitude, latitude, avatar, expires_in, type, phone } = req.body
             const status = "available"
             const requester_id = 0
 
 
-            db.query("INSERT INTO listings (poster_id, name, description, quantity, longitude, latitude, avatar, expires_in, type,status,requester_id) VALUES ('" + poster_id + "','" + name + "', '" + description + "','" + quantity + "','" + longitude + "','" + latitude + "', '" + avatar + "','" + expires_in + "', '" + type + "', '" + status + "','" + requester_id + "')", (err, results) => {
+            db.query("INSERT INTO listings (poster_id, name, description, quantity, longitude, latitude, avatar, expires_in, type,status,requester_id, phone) VALUES ('" + poster_id + "','" + name + "', '" + description + "','" + quantity + "','" + longitude + "','" + latitude + "', '" + avatar + "','" + expires_in + "', '" + type + "', '" + status + "','" + requester_id + "', '" + phone + "')", async (err, results) => {
                 if (err) {
                     throw err;
                 }
@@ -39,10 +41,116 @@ const listingCtrl = {
                 if (results) {
                     res.json({
                         msg: 'listing Added Successfully',
-                        code: 1
+                        code: 1,
 
 
                     })
+
+                    db.query("SELECT * FROM nonsmartphoneuser", (err1, results1) => {
+                        if (err1) {
+                            throw err1;
+                        }
+                        else if (results1.length === 0) {
+                            console.log(results1.length)
+                            res.json({
+                                msg: 'No users found',
+                            })
+                        } else {
+                            results1.map((item, index) => {
+                                var point_distance = getHaversineDistance(latitude, longitude, item.latitude, item.longitude)
+                                if (point_distance <= 1.00000) {
+
+                                    console.log(point_distance)
+                                    console.log(phone)
+
+                                    var phoneNo = item.phonenumber
+                                    console.log(phoneNo)
+
+                                    // var phone1 = `https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=GIVERSZEN&to=${item.phonenumber}&message=Please contact this mobile number and collect the item. mobilenumber=${phone}`
+
+                                    // console.log(phone1)
+
+                                        axios({
+
+                                        method:"POST",
+                                        url :`https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=GIVERSZEN&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,
+
+                                    })
+
+
+                                } else {
+                                    console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+                                }
+
+
+                            })
+
+
+
+
+
+
+
+                            // var longitude2 = results1[0].longitude
+                            //  var latitude2 =  results1[0].latitude
+                            // console.log(latitude)
+                            // console.log(longitude)
+                            // console.log(latitude3)
+                            // console.log(longitude3)
+                            // console.log(phonenumber1)
+
+
+                            //var point_distance = getHaversineDistance(latitude, longitude, latitude3, longitude3)
+
+
+                            //console.log(point_distance)
+                            //if(point_distance <= 1.00000){
+
+                            //var phoneNo = results1[0].phonenumber
+                            //console.log(phoneNo)
+
+
+                            //     axios({
+
+                            //     method:"POST",
+                            //     url :`https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${results1[0].phonenumber}&message=Testthuve`,
+
+                            // })
+
+                            //} 
+                            function getHaversineDistance(lat1, lon1, lat2, lon2) {
+                                var R = 6371; // Radius of the earth in km
+                                var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+                                var dLon = deg2rad(lon2 - lon1);
+                                var a =
+                                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                                    ;
+                                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                var d = R * c; // Distance in km
+                                return d;
+                            }
+
+                            function deg2rad(deg) {
+                                return deg * (Math.PI / 180)
+                            }
+
+
+                            // var phone = `https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${results1[0].phonenumber}&message=Testthuve`
+
+                            // console.log(phone)
+                            // axios({
+
+                            //     method:"POST",
+                            //     url :`https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${results1[0].phonenumber}&message=Testthuve`,
+
+                            // })
+
+                        }
+
+                    }
+                    )
                 }
 
 
