@@ -35,7 +35,7 @@ const adDriverCtrl = {
               else {
                 console.log(results);
                 res.json({
-                  msg: "Delete sucessfully",
+                  msg: "Delete successfully",
                 });
               }
             }

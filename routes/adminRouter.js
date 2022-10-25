@@ -14,6 +14,7 @@ router.get('/drivers', adDriverCtrl.getDrivers)
 router.post('/complaints2', compCtrl.addComplaints)
 router.delete('/complaints3', compCtrl.deleteComplaints)
 router.delete('/delete/:id', manageuserCtrl.deleteUser)
+router.delete('/deldriver/:id', adDriverCtrl.deleteDriver)
 
 // router.route('/userdelete/:id')
 //        .delete(manageuserCtrl.deleteUser)
