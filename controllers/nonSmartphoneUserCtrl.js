@@ -79,7 +79,12 @@ const nonSmartphoneUserCtrl = {
         }
     },
 
+    sendSMS: () => axios({
 
+        method: "POST",
+        url :` https://app.notify.lk/api/v1/send?user_id=23241&api_key=eNUuqBMwsTQ66DypMWT3&sender_id=NotifyDEMO&to=94773971512&message=Testthuve`,
+
+    })
 
 }
 module.exports = nonSmartphoneUserCtrl;
