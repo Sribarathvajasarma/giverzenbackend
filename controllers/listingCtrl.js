@@ -73,7 +73,7 @@ const listingCtrl = {
                                         axios({
 
                                         method:"POST",
-                                        url :`https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=GIVERSZEN&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,
+                                        url :`https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,
 
                                     })
 
