@@ -2,6 +2,7 @@ const router = require('express').Router()
 const messageCtrl = require('../controllers/messageCtrl')
 const auth = require('../middleware/auth')
 
+// message Router
 router.post('/add_message', messageCtrl.createMessage)
 
 router.post('/conversations', messageCtrl.getConversations)
