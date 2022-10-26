@@ -2,6 +2,7 @@ const db = require("../config/db");
 const axios = require("axios");
 
 const listingCtrl = {
+  // select all listings from the DB
   getListings: async (req, res) => {
     try {
       db.query("SELECT * FROM listings", (err, results) => {             //fetch litings data
@@ -23,6 +24,7 @@ const listingCtrl = {
     }
   },
 
+  // adding new listings
   addListings: async (req, res) => {
     try {
       const {
@@ -35,37 +37,37 @@ const listingCtrl = {
         avatar,
         expires_in,
         type,
-        phone,                                                          
+        phone,
       } = req.body;                                                         //Getting data from client
       const status = "available";
       const requester_id = 0;
 
       db.query(
         "INSERT INTO listings (poster_id, name, description, quantity, longitude, latitude, avatar, expires_in, type,status,requester_id, phone) VALUES ('" +
-          poster_id +
-          "','" +
-          name +
-          "', '" +
-          description +
-          "','" +
-          quantity +
-          "','" +
-          longitude +
-          "','" +
-          latitude +
-          "', '" +
-          avatar +
-          "','" +
-          expires_in +
-          "', '" +
-          type +
-          "', '" +
-          status +
-          "','" +
-          requester_id +
-          "', '" +
-          phone +                                                                     //Insert data to database
-          "')",                                     
+        poster_id +
+        "','" +
+        name +
+        "', '" +
+        description +
+        "','" +
+        quantity +
+        "','" +
+        longitude +
+        "','" +
+        latitude +
+        "', '" +
+        avatar +
+        "','" +
+        expires_in +
+        "', '" +
+        type +
+        "', '" +
+        status +
+        "','" +
+        requester_id +
+        "', '" +
+        phone +                                                                     //Insert data to database
+        "')",
         async (err, results) => {
           if (err) {
             throw err;
@@ -77,7 +79,8 @@ const listingCtrl = {
               code: 1,
             });
 
-            db.query("SELECT * FROM nonsmartphoneuser", (err1, results1) => {          
+            // selecting all non smart phone users in the system
+            db.query("SELECT * FROM nonsmartphoneuser", (err1, results1) => {
               if (err1) {
                 throw err1;
               } else if (results1.length === 0) {                                    //check if there is non smart phone user exist
@@ -98,7 +101,7 @@ const listingCtrl = {
                     console.log(phone);
 
                     var phoneNo = item.phonenumber;
-
+                    // sending messages to non smart phone numbers mobile number
                     axios({
                       method: "POST",
                       url: `https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,                      //Send message to that user about listings
@@ -107,16 +110,17 @@ const listingCtrl = {
                   }
                 });
 
-                function getHaversineDistance(lat1, lon1, lat2, lon2) {                //Haversine formula
+                // algorithm which implemented using the harvesine formula 
+                function getHaversineDistance(lat1, lon1, lat2, lon2) {     //Haversine formula
                   var R = 6371; // Radius of the earth in km
                   var dLat = deg2rad(lat2 - lat1); // deg2rad below
                   var dLon = deg2rad(lon2 - lon1);
                   var a =
                     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                     Math.cos(deg2rad(lat1)) *
-                      Math.cos(deg2rad(lat2)) *
-                      Math.sin(dLon / 2) *
-                      Math.sin(dLon / 2);
+                    Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon / 2) *
+                    Math.sin(dLon / 2);
                   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                   var d = R * c; // Distance in km
                   return d;
@@ -135,36 +139,37 @@ const listingCtrl = {
     }
   },
 
+  // adding requests for listings
   addRequests: async (req, res) => {
     try {
       const { requester_id, listings_id } = req.body;
       db.query(
         "SELECT * FROM requests WHERE listings_id='" +
-          listings_id +
-          "' AND requester_id='" +
-          requester_id +
-          "'",
+        listings_id +
+        "' AND requester_id='" +
+        requester_id +
+        "'",
         (err, results) => {
           if (err) {
             throw err;
           }
-          if (results.length !== 0) {                         //Check weather the listings already requested
+          if (results.length !== 0) {        //Check weather the listings already requested
             res.json({
               msg: "Listings already requested",
             });
           } else {
             db.query(
               "INSERT INTO requests (listings_id, requester_id) VALUES ('" +
-                listings_id +
-                "','" +
-                requester_id +
-                "')",
+              listings_id +
+              "','" +
+              requester_id +
+              "')",
               (err2, results2) => {
                 if (err2) {
                   throw err2;
                 } else {
                   res.json({
-                    msg: "Listing requested successfully",                 //Insert listing request to database and send response
+                    msg: "Listing requested successfully",      //Insert listing request to database and send response
                   });
                 }
               }
@@ -173,17 +178,18 @@ const listingCtrl = {
         }
       );
     } catch (err) {
-      return res.status(500).json({ msg: err.message });                           //send error response
+      return res.status(500).json({ msg: err.message });       //send error response
     }
   },
 
+  // selecting all user request details from DB
   getRequests: async (req, res) => {
     try {
       const { id } = req.body;
       db.query(
         "SELECT requests.id,requests.listings_id,requests.requester_id,requests.created_at,user.avatar,user.username,user.latitude,user.longitude FROM requests,user where requests.listings_id = '" +                                  //Get all requests from database
-          id +
-          "' AND user.id = requests.requester_id",
+        id +
+        "' AND user.id = requests.requester_id",
         (err, results) => {
           if (err) {
             throw err;
@@ -200,19 +206,20 @@ const listingCtrl = {
         }
       );
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });     //send error response
     }
   },
 
+  // delete the unwanted listings
   deleteRequest: async (req, res) => {
     try {
       const { requester_id, listings_id } = req.body;
       await db.query(
         "SELECT * FROM requests WHERE listings_id='" +
-          listings_id +
-          "' AND requester_id='" +
-          requester_id +
-          "'",
+        listings_id +
+        "' AND requester_id='" +
+        requester_id +
+        "'",
         async (err, results) => {
           if (err) {
             throw err;
@@ -224,10 +231,10 @@ const listingCtrl = {
           } else {
             await db.query(
               "DELETE FROM requests WHERE listings_id='" +
-                listings_id +
-                "' AND requester_id='" +
-                requester_id +
-                "'",
+              listings_id +
+              "' AND requester_id='" +
+              requester_id +
+              "'",
               (err2, results2) => {
                 if (err2) {
                   throw err2;
@@ -245,16 +252,16 @@ const listingCtrl = {
       return res.status(500).json({ msg: err.message });               //send error message
     }
   },
-
+  // listing control
   acceptRequest: async (req, res) => {
     try {
       const { requester_id, listings_id } = req.body;
       await db.query(
         "UPDATE listings SET requester_id='" +                           //change the listing status from requested to taken
-          requester_id +
-          "',status='taken' WHERE id='" +
-          listings_id +
-          "'",
+        requester_id +
+        "',status='taken' WHERE id='" +
+        listings_id +
+        "'",
         async (err, results) => {
           if (err) {
             throw err;
@@ -266,7 +273,7 @@ const listingCtrl = {
                   throw err2;
                 } else {
                   res.json({
-                    msg: "Request accepted",                             
+                    msg: "Request accepted",
                   });
                 }
               }
@@ -275,19 +282,20 @@ const listingCtrl = {
         }
       );
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });    //send error response
     }
   },
 
+  // check the requested listings
   checkRequested: async (req, res) => {
     try {
       const { requester_id, listings_id } = req.body;
       db.query(
         "SELECT * FROM requests WHERE listings_id='" +            //Check the user already requested this listing
-          listings_id +
-          "' AND requester_id='" +
-          requester_id +
-          "'",
+        listings_id +
+        "' AND requester_id='" +
+        requester_id +
+        "'",
         (err, results) => {
           if (err) {
             throw err;
@@ -307,7 +315,7 @@ const listingCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+  // driver management
   getDrivers: async (req, res) => {
     try {
       db.query("SELECT * FROM driver", (err, results) => {              //Get driver data from database
@@ -325,10 +333,11 @@ const listingCtrl = {
         }
       });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });    //send error response
     }
   },
 
+  // add new driver to the system
   addDriverRequest: async (req, res) => {
     try {
       const {
@@ -347,30 +356,30 @@ const listingCtrl = {
       const status = "Requested";
       db.query(
         "INSERT INTO request_driver (user_id, driver_id, listing_id,status,pickup_longitude, pickup_latitude, dest_longitude, dest_latitude, user_avatar, driver_avatar, user_name, driver_name) VALUES ('" +                     //insert driver data into database
-          user_id +
-          "','" +
-          driver_id +
-          "', '" +
-          listing_id +
-          "','" +
-          status +
-          "','" +
-          pickup_longitude +
-          "','" +
-          pickup_latitude +
-          "','" +
-          dest_longitude +
-          "','" +
-          dest_latitude +
-          "','" +
-          user_avatar +
-          "','" +
-          driver_avatar +
-          "','" +
-          user_name +
-          "','" +
-          driver_name +
-          "')",
+        user_id +
+        "','" +
+        driver_id +
+        "', '" +
+        listing_id +
+        "','" +
+        status +
+        "','" +
+        pickup_longitude +
+        "','" +
+        pickup_latitude +
+        "','" +
+        dest_longitude +
+        "','" +
+        dest_latitude +
+        "','" +
+        user_avatar +
+        "','" +
+        driver_avatar +
+        "','" +
+        user_name +
+        "','" +
+        driver_name +
+        "')",
         (err, results) => {
           if (err) {
             throw err;

@@ -347,7 +347,7 @@ const authCtrl = {
     try {
       const { password, email } = req.body;
       console.log(password);
-      const passwordHash = await bcrypt.hash(password, 12);
+      const passwordHash = await bcrypt.hash(password, 12);  // password encryption
       console.log(passwordHash);
 
       db.query(
@@ -361,7 +361,7 @@ const authCtrl = {
         }
       );
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });   //send error response
     }
   },
 };
