@@ -47,7 +47,30 @@ const adDriverCtrl = {
         }
       },
   
-  
+      addDriver: async (req, res) => {
+        try {
+            const { drivername, vehicle, costperkm, status } = req.body
+            
+
+
+            db.query("INSERT INTO driver (drivername,vehicle, costperkm, status) VALUES ('" + drivername + "', '" + vehicle + "','" + costperkm + "','" + status + "')", (err, results) => {
+                if (err) {
+                    throw err;
+                }
+
+                if (results) {
+                    res.json({
+                        msg: 'Driver Added Successfully',
+                    })
+                }
+
+
+            })
+
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
 }
 
 module.exports = adDriverCtrl

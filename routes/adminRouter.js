@@ -5,6 +5,8 @@ const compCtrl = require("../controllers/compCtrl")
 const adminauthCtrl = require("../controllers/adminauthCtrl")
 const adDriverCtrl = require("../controllers/adDriverCtrl")
 const manageuserCtrl = require("../controllers/manageuserCtrl")
+const dashCtrl = require("../controllers/dashCtrl")
+
 
 router.get('/anlistings', listingCtrl.getListings)
 router.get('/users', userCtrl.getUsers)
@@ -15,8 +17,9 @@ router.post('/complaints2', compCtrl.addComplaints)
 router.delete('/complaints3', compCtrl.deleteComplaints)
 router.delete('/delete/:id', manageuserCtrl.deleteUser)
 router.delete('/deldriver/:id', adDriverCtrl.deleteDriver)
-
-// router.route('/userdelete/:id')
-//        .delete(manageuserCtrl.deleteUser)
-
+router.get('/count1', dashCtrl.getTotusers)
+router.get('/count2', dashCtrl.getTotcomplaints)
+router.get('/count3', dashCtrl.getTotlistings)
+router.get('/count4', dashCtrl.getTotdrivers)
+router.get('/count5', dashCtrl.getTotwanted)
 module.exports = router
