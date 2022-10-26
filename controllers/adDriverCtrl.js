@@ -2,6 +2,7 @@ const db = require('../config/db')
 
 const adDriverCtrl = {
     getDrivers: async (req, res) => {
+      //get drivers
         try {
             db.query("SELECT * FROM driver", (err, results) => {
                 if (err) {
@@ -23,6 +24,7 @@ const adDriverCtrl = {
             return res.status(500).json({ msg: err.message })
         }
     },
+    // Delete driver
     deleteDriver: async (req, res) => {
         try {
           const id = req.params.id;
