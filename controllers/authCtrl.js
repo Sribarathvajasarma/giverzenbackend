@@ -44,16 +44,16 @@ const authCtrl = {
                   else {
                     db.query(
                       "INSERT INTO user (username, email, password, longitude, latitude) VALUES ('" +
-                        username +
-                        "','" +
-                        email +
-                        "','" +
-                        passwordHash +
-                        "','" +
-                        longitude +
-                        "','" +
-                        latitude +
-                        "')",
+                      username +
+                      "','" +
+                      email +
+                      "','" +
+                      passwordHash +
+                      "','" +
+                      longitude +
+                      "','" +
+                      latitude +
+                      "')",
                       (err3, results3) => {
                         if (err3) {
                           throw err3;
@@ -61,8 +61,8 @@ const authCtrl = {
                         if (results3) {
                           db.query(
                             "SELECT * FROM user where username = '" +
-                              username +
-                              "'",
+                            username +
+                            "'",
                             (err4, results4) => {
                               if (err4) {
                                 throw err4;
@@ -98,6 +98,7 @@ const authCtrl = {
     }
   },
 
+  //user login function
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -135,6 +136,7 @@ const authCtrl = {
     }
   },
 
+  // user logout function
   logout: async (req, res) => {
     try {
       res.clearCookie("refreshtoken", { path: "/api/refresh_token" });
@@ -144,6 +146,7 @@ const authCtrl = {
     }
   },
 
+  // generate access token to login
   generateAccessToken: async (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
@@ -180,6 +183,9 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+
+  // user edit profile function 
 
   editProfile: async (req, res) => {
     try {
@@ -227,24 +233,24 @@ const authCtrl = {
                   else {
                     db.query(
                       "UPDATE user SET username='" +
-                        username +
-                        "', email='" +
-                        email +
-                        "' , about='" +
-                        about +
-                        "', avatar='" +
-                        image +
-                        "', phone= '" +
-                        phone +
-                        "' , password='" +
-                        passwordHash +
-                        "' , longitude='" +
-                        longitude +
-                        "' , latitude='" +
-                        latitude +
-                        "' WHERE id= '" +
-                        id +
-                        "'",
+                      username +
+                      "', email='" +
+                      email +
+                      "' , about='" +
+                      about +
+                      "', avatar='" +
+                      image +
+                      "', phone= '" +
+                      phone +
+                      "' , password='" +
+                      passwordHash +
+                      "' , longitude='" +
+                      longitude +
+                      "' , latitude='" +
+                      latitude +
+                      "' WHERE id= '" +
+                      id +
+                      "'",
                       (err, ressults) => {
                         if (err) {
                           throw err;
@@ -266,6 +272,8 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  //  user forgot password function
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
@@ -286,7 +294,7 @@ const authCtrl = {
               console.log(results1);
             }
           );
-
+          // sending pin number to email eccount
           sendMail(email, number);
           res.json({
             msg: "Send the Pin Number , please check your email.",
@@ -298,6 +306,8 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  // confirm the pin number which sent to the personal email account
   confirmpinNumber: async (req, res) => {
     try {
       const { pinNumber } = req.body;
@@ -331,6 +341,8 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  // user reset password account
   resetPassword: async (req, res) => {
     try {
       const { password, email } = req.body;
