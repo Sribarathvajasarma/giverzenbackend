@@ -1,6 +1,7 @@
 const db = require('../config/db')
 
 const compCtrl = {
+    //select all complaints 
     getComplaints: async (req, res) => {
         try {
             db.query("SELECT * FROM complaints", (err, results) => {
@@ -23,7 +24,7 @@ const compCtrl = {
             return res.status(500).json({ msg: err.message })
         }
     },
-
+//add new complaints 
     addComplaints: async (req, res) => {
         try {
             const { username,complaint,reportedto,date } = req.body
@@ -44,7 +45,7 @@ const compCtrl = {
             return res.status(500).json({ msg: err.message })
         }
     },
-
+// delete all comlaints by admin
     deleteComplaints: async (req, res) => {
         try {
             

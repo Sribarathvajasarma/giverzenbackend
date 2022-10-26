@@ -370,6 +370,7 @@ function between(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+//create new access token
 const createAccessToken = (payload) => {
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "1d",
