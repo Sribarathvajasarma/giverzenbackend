@@ -3,7 +3,7 @@ const db = require('../config/db')
 const dashCtrl = {
     getTotusers: async (req, res) => {
         try {
-            db.query("Select count(id) as count FROM user", (err, results) => {
+            db.query("Select count(id) as count1 FROM user", (err, results) => {
                 if (err) {
                     throw err
                 }
@@ -23,7 +23,7 @@ const dashCtrl = {
 
     getTotlistings: async (req, res) => {
         try {
-            db.query("Select count(*) FROM listings", (err, results) => {
+            db.query("Select count(id) as count3 FROM listings", (err, results) => {
                 if (err) {
                     throw err
                 }
@@ -41,7 +41,7 @@ const dashCtrl = {
     },
     getTotdrivers: async (req, res) => {
         try {
-            db.query("Select count(*) FROM driver", (err, results) => {
+            db.query("Select count(id) as count4 FROM driver", (err, results) => {
                 if (err) {
                     throw err
                 }
@@ -60,7 +60,7 @@ const dashCtrl = {
 
     getTotcomplaints: async (req, res) => {
         try {
-            db.query("Select count(*) FROM complaints", (err, results) => {
+            db.query("Select count(complaint_id) as count2 FROM complaints", (err, results) => {
                 if (err) {
                     throw err
                 }
@@ -79,7 +79,7 @@ const dashCtrl = {
 
     getTotwanted: async (req, res) => {
         try {
-            db.query("Select count(*) FROM requests", (err, results) => {
+            db.query("Select count(id) as count5 FROM requests", (err, results) => {
                 if (err) {
                     throw err
                 }
