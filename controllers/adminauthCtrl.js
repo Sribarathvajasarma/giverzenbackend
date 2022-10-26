@@ -5,6 +5,7 @@ const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 
 const adminauthCtrl = {
+//Admin register function
   register: async (req, res) => {
     try {
       const { adminname, password } = req.body;
@@ -83,7 +84,7 @@ const adminauthCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+ // Admin Login function
   login: async (req, res) => {
     try {
       const { adminname, password } = req.body;
@@ -122,7 +123,7 @@ const adminauthCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+  // Admin logout function
   logout: async (req, res) => {
     try {
       res.clearCookie("refreshtoken", { path: "/api/refresh_token" });
@@ -131,7 +132,7 @@ const adminauthCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+ // generate Access token function
   generateAccessToken: async (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
@@ -170,7 +171,7 @@ const adminauthCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+  // editProfile function
   editProfile: async (req, res) => {
     try {
       const { Admin_id, adminname, password } = req.body;
@@ -235,17 +236,17 @@ const adminauthCtrl = {
     }
   },
 };
-
+// generate auto Generate function
 function between(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
+// create AccessToken Function
 const createAccessToken = (payload) => {
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "1d",
   });
 };
-
+// create refreshtoken Function
 const createRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: "30d",
