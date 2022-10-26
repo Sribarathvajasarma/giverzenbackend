@@ -7,6 +7,7 @@ const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 
 const authCtrl = {
+  //user register function
   register: async (req, res) => {
     try {
       const { username, email, password, longitude, latitude } = req.body;
