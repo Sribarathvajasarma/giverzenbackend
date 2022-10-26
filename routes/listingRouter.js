@@ -2,7 +2,7 @@ const router = require('express').Router()
 const listingCtrl = require("../controllers/listingCtrl")
 
 
-
+// listings  Routes
 
 router.get('/listings', listingCtrl.getListings)
 

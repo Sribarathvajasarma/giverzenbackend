@@ -7,7 +7,7 @@ const adDriverCtrl = require("../controllers/adDriverCtrl")
 const manageuserCtrl = require("../controllers/manageuserCtrl")
 const dashCtrl = require("../controllers/dashCtrl")
 
-
+//Routes for Admin Part
 router.get('/anlistings', listingCtrl.getListings)
 router.get('/users', userCtrl.getUsers)
 router.get('/complaints', compCtrl.getComplaints)
@@ -17,6 +17,7 @@ router.post('/complaints2', compCtrl.addComplaints)
 router.delete('/complaints3', compCtrl.deleteComplaints)
 router.delete('/delete/:id', manageuserCtrl.deleteUser)
 router.delete('/deldriver/:id', adDriverCtrl.deleteDriver)
+// Routes for count
 router.get('/count1', dashCtrl.getTotusers)
 router.get('/count2', dashCtrl.getTotcomplaints)
 router.get('/count3', dashCtrl.getTotlistings)

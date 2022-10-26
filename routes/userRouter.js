@@ -4,7 +4,7 @@ const userCtrl = require("../controllers/userCtrl")
 
 
 
-
+// user Routes
 router.get('/search', userCtrl.searchUser)
 
 router.get('/get_members', userCtrl.getCommiteeMembers)
