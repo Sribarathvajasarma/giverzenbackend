@@ -10,7 +10,7 @@ class APIfeatures {
         this.query = query;
         this.queryString = queryString;
     }
-
+    // post limits
     paginating() {
         const page = this.queryString.page * 1 || 1
         const limit = this.queryString.limit * 1 || 9
@@ -21,19 +21,21 @@ class APIfeatures {
 }
 
 const messageCtrl = {
+
+    // chat manage
     createMessage: async (req, res) => {
         try {
 
             const { recipient, text, media, sending } = req.body
             if (!recipient || (!text.trim() && media.length === 0)) return;
-
+            // selecting all chat in DB
             await db.query("SELECT * FROM conversations where (sender= '" + sending + "' AND recipient= '" + recipient + "') OR (sender= '" + recipient + "' AND recipient= '" + sending + "')", async (err, results) => {
                 if (err) {
                     throw err
                 }
                 if (results.length !== 0) {
                     const conversation = results[0].id
-
+                    // update the already added chat
                     await db.query("UPDATE conversations SET sender= '" + sending + "',recipient= '" + recipient + "',text='" + text + "',media='" + media + "' WHERE id='" + conversation + "'", async (err2, results2) => {
                         if (err2) {
                             throw err2
@@ -43,6 +45,7 @@ const messageCtrl = {
 
                 }
                 else {
+                    // insert new chat 
                     await db.query("INSERT INTO conversations (sender,recipient,text,media) VALUES ('" + sending + "','" + recipient + "', '" + text + "','" + media + "')", async (err2, results2) => {
                         if (err2) {
                             throw err2
@@ -161,7 +164,7 @@ const messageCtrl = {
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
-    },deleteMessages: async (req, res) => {
+    }, deleteMessages: async (req, res) => {
         try {
             const { id } = req.body
             await db.query("DELETE FROM messages where id='" + id + "'", async (err, results) => {
@@ -183,7 +186,7 @@ const messageCtrl = {
         }
     },
 
-deleteConversation: async (req, res) => {
+    deleteConversation: async (req, res) => {
         try {
             const { sender, receiver } = req.body
             await db.query("DELETE FROM conversations where (sender= '" + sender + "' AND recipient= '" + receiver + "') OR (sender= '" + receiver + "' AND recipient= '" + sender + "')", async (err, results) => {
