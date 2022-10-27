@@ -104,7 +104,7 @@ const listingCtrl = {
                     // sending messages to non smart phone numbers mobile number
                     axios({
                       method: "POST",
-                      url: `https://app.notify.lk/api/v1/send?user_id=23139&api_key=qzNhoJQsPs9gV93SQsHi&sender_id=NotifyDEMO&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,                      //Send message to that user about listings
+                      url: `https://app.notify.lk/api/v1/send?user_id=23142&api_key=6EahOSONXTRl1bhvAi3I&sender_id=NotifyDEMO&to=${item.phonenumber}&message=There is a listing posted nearby your area. If you want that,Please contact this mobile number and collect the item. mobilenumber=${phone}`,                      //Send message to that user about listings
                     });
                   } else {
                   }
